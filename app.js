@@ -12,8 +12,11 @@ function Product(filepath, name){
 
 //three displayed images, side-by-side
 
-//total number of clicks and percentages of times an item was clicked
+//track total number of clicks
 
+//percentages of times an item was clicked
+
+//stop user from clicking when they reach 25 votes/clicks
 
 //images of products
 new Product('img/bag.jpg', 'R2D2 Bag');
@@ -41,6 +44,7 @@ new Product('img/wine-glass.jpg', 'Wine Glass');
 //access image element from the DOM
 var imgEl = document.getElementById('bus-products');
 
+
 //event listener on the image
 imgEl.addEventListener('click', randomProduct);
 
@@ -52,5 +56,13 @@ var randomStuff = Math.floor(Math.random() * Product.allProducts.length);
 //use the random number to displaya  product at that random inde
 imgEl.src = Product.allProducts[randomStuff].filepath;
 }
+
+function randomProduct() {
+    //random number generator to return a number between 0 and the length of the array.
+    var randomStuff = Math.floor(Math.random() * Product.allProducts.length);
+    //use the random number to displaya  product at that random inde
+    imgEl.src = Product.allProducts[randomStuff].filepath;
+    }
+
 
 randomProduct();
