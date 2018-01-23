@@ -1,20 +1,26 @@
 'use strict';
-
+//array to store the objects
 Product.allProducts = [];
 
-//constructor of products
+//track total number of clicks
+Product.totalClicks = 0;
 
+//three displayed images, side-by-side
+//percentages of times an item was clicked
+//track previously displayed images
+Product.lastDisplayed = [];
+
+//access the section element from the DOM
+var sectionEl = document.getElementById('')
+
+
+//constructor of products
 function Product(filepath, name){
     this.filepath = filepath;
     this.name = name;
     Product.allProducts.push(this);
 }
 
-//three displayed images, side-by-side
-
-//track total number of clicks
-
-//percentages of times an item was clicked
 
 //stop user from clicking when they reach 25 votes/clicks
 
@@ -42,7 +48,9 @@ new Product('img/wine-glass.jpg', 'Wine Glass');
 
 
 //access image element from the DOM
-var imgEl = document.getElementById('bus-products');
+var leftEl = document.getElementById('left');
+var rightEl = document.getElementById('right');
+var centerEl = document.getElementById('center');
 
 
 //event listener on the image
