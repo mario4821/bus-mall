@@ -22,6 +22,16 @@ var productNames = [];
 //array to store votes for each product
 var productVotes = [];
 
+//
+var previousNumbers = [];
+
+//Current numbers for images called to avoid repeats
+var currentNumbers = [];
+
+function randomizerProduct() {
+    return Math.floor(Math.random() * Product.allProducts.length);
+}
+
 //constructor of products
 function Product(filepath, name){
     this.filepath = filepath;
@@ -68,25 +78,45 @@ function randomProduct() {
 var randomLeft = Math.floor(Math.random() * Product.allProducts.length);
 var randomCenter = Math.floor(Math.random() * Product.allProducts.length);
 var randomRight = Math.floor(Math.random() * Product.allProducts.length);
-
+}
 //check to make sure each random number is unique and not one of the previously displayed images
 //if numbers are the same, then new random numbers need to be generated.
-while(randomLeft )
-randomLeft = Math.floor(Math.random() * Product.allProducts.length);
-randomCenter = Math.floor(Math.random() * Product.allProducts.length);
-randomRight = Math.floor(Math.random() * Product.allProducts.length);
+function newNumbers() {
+    do {var temp = randomizerProduct() 
+//while the conditions are met the loop will rn and randomly produce a number.
+    }
+    while (currentNumbers.includes(temp) || previousNumbers.includes(temp)) 
+    return temp; //returns a random number
+}
+
+//Generates 3 new uniquest index numbers for images 
+function newImages() {
+    previousNumbers = currentNumbers;
+    currentNumbers = []; 
+//This loop begins index at 0 and will iderate numbers until i is no longer less than 3, incrementing each time and ultimately giving the new number. Going to genereate a new number that is unique for the first 3 indices.  
+    for (let i = 0; i < 3; i++) {
+        currentNumbers[i] = newNumbers();
+        
+    }
+}
+
+newImages();
+
+// randomLeft = Math.floor(Math.random() * Product.allProducts.length);
+// randomCenter = Math.floor(Math.random() * Product.allProducts.length);
+// randomRight = Math.floor(Math.random() * Product.allProducts.length);
 
 
 
 
 //set the src and alt attributes for images
-leftEl.src = Product.allProducts[randomLeft].filepath;
+leftEl.src = Product.allProducts[currentNumbers[0]].filepath; //current 
 leftEl.alt = Product.allProducts[randomLeft].name;
 
-centerEl.src = Product.allProducts[randomCenter].filepath;
+centerEl.src = Product.allProducts[currentNumbers[1]].filepath;
 centerEl.alt = Product.allProducts[randomCenter].name;
 
-rightEl.src = Product.allProducts[randomRight].filepath;
+rightEl.src = Product.allProducts[currentNumbers[2]].filepath;
 rightEl.src = Product.allProducts[randomRight].name;
 
 //increment the number of times each image was shown
@@ -135,8 +165,6 @@ function updateVotes (){
         productVotes[i] = Product.allProducts[i].votes;
     }
 }
-
-
 
 //event listener on the image
 sectionEl.addEventListener('click', randomProduct);
