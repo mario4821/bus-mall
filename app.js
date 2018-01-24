@@ -5,6 +5,11 @@ Product.allProducts = [];
 //track total number of clicks
 Product.totalClicks = 0;
 
+//variables for pictures
+var randomLeft = 0;
+var randomCenter = 0;
+var randomRight = 0;
+
 //three displayed images, side-by-side
 //percentages of times an item was clicked
 //track previously displayed images
@@ -22,7 +27,6 @@ var productNames = [];
 //array to store votes for each product
 var productVotes = [];
 
-//
 var previousNumbers = [];
 
 //Current numbers for images called to avoid repeats
@@ -75,9 +79,9 @@ var centerEl = document.getElementById('center');
 // callback function for event listener to randomly display image
 function randomProduct() {
 //random number generator to return a number between 0 and the length of the array.
-var randomLeft = Math.floor(Math.random() * Product.allProducts.length);
-var randomCenter = Math.floor(Math.random() * Product.allProducts.length);
-var randomRight = Math.floor(Math.random() * Product.allProducts.length);
+randomLeft = Math.floor(Math.random() * Product.allProducts.length);
+randomCenter = Math.floor(Math.random() * Product.allProducts.length);
+randomRight = Math.floor(Math.random() * Product.allProducts.length);
 }
 //check to make sure each random number is unique and not one of the previously displayed images
 //if numbers are the same, then new random numbers need to be generated.
@@ -102,33 +106,28 @@ function newImages() {
 
 newImages();
 
-// randomLeft = Math.floor(Math.random() * Product.allProducts.length);
-// randomCenter = Math.floor(Math.random() * Product.allProducts.length);
-// randomRight = Math.floor(Math.random() * Product.allProducts.length);
-
-
-
-
 //set the src and alt attributes for images
-leftEl.src = Product.allProducts[currentNumbers[0]].filepath; //current 
-leftEl.alt = Product.allProducts[randomLeft].name;
+function render(){
+    leftEl.src = Product.allProducts[randomLeft].filepath; //current 
+    leftEl.alt = Product.allProducts[randomLeft].name;
 
-centerEl.src = Product.allProducts[currentNumbers[1]].filepath;
-centerEl.alt = Product.allProducts[randomCenter].name;
+    centerEl.src = Product.allProducts[randomCenter].filepath;
+    centerEl.alt = Product.allProducts[randomCenter].name;
 
-rightEl.src = Product.allProducts[currentNumbers[2]].filepath;
-rightEl.src = Product.allProducts[randomRight].name;
+    rightEl.src = Product.allProducts[randomRight].filepath;
+    rightEl.alt = Product.allProducts[randomRight].name;
 
-//increment the number of times each image was shown
-Product.allProducts[randomLeft].timesDisplayed += 1;
-Product.allProducts[randomCenter].timesDisplayed += 1;
-Product.allProducts[randomRight].timesDisplayed += 1;
+    //increment the number of times each image was shown
+    Product.allProducts[randomLeft].timesDisplayed += 1;
+    Product.allProducts[randomCenter].timesDisplayed += 1;
+    Product.allProducts[randomRight].timesDisplayed += 1;
 
-//keep track of these as the previously displayed products
-Product.lastDisplayed[0] = randomLeft;
-Product.lastDisplayed[1] = randomCenter;
-Product.lastDisplayed[2] = randomRight;
+    //keep track of these as the previously displayed products
+    Product.lastDisplayed[0] = randomLeft;
 
+    Product.lastDisplayed[1] = randomCenter;
+    Product.lastDisplayed[2] = randomRight;
+}
 //define our handleClick function
 function handleClick(e) {
     //track the total number of clicks
@@ -145,9 +144,9 @@ function handleClick(e) {
         sectionEl.removeEventListener('click', handleClick);
         showResults();
         updateVotes();
-        renderChart();
     } else {
         randomProduct();
+        render()
     }
 }
 
@@ -167,6 +166,7 @@ function updateVotes (){
 }
 
 //event listener on the image
-sectionEl.addEventListener('click', randomProduct);
+sectionEl.addEventListener('click', handleClick);
 
 randomProduct();
+render()
