@@ -99,19 +99,21 @@ function newNumbers() {
     }
     while (currentNumbers.includes(temp) || previousNumbers.includes(temp)) 
     return temp; //returns a random number
-}
-
-//Generates 3 new uniquest index numbers for images 
-function newImages() {
-    previousNumbers = currentNumbers;
-    currentNumbers = [];
-//This loop begins index at 0 and will iterate numbers until i is no longer less than 3, incrementing each time and ultimately giving the new number. Going to genereate a new number that is unique for the first 3 indices.  
-    for (let i = 0; i < 3; i++) {
-        currentNumbers[i] = newNumbers();
     }
-}
-
-newImages();
+//Generates 3 new uniquest index numbers for images 
+// function newImages() {
+//     // previousNumbers = currentNumbers;
+//     // currentNumbers = [];
+//     for (let i = 0; i < 1; i++) {
+//         currentNumbers[i] = newNumbers();
+//     }
+//     else (currentNumbers[i] <) {
+//         newNumbers();
+//         render()
+//     } 
+    
+// newImages();
+// }
 
 //set the src and alt attributes for images
 function render(){
