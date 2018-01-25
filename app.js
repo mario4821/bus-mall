@@ -32,6 +32,9 @@ var previousNumbers = [];
 //Current numbers for images called to avoid repeats
 var currentNumbers = [];
 
+//array to store names for chart lables
+var names = [];
+
 function randomizerProduct() {
     return Math.floor(Math.random() * Product.allProducts.length);
 }
@@ -44,6 +47,7 @@ function Product(filepath, name){
     this.timesDisplayed = 0;
     Product.allProducts.push(this);
     productNames.push(this.name);
+    names.push(this.name);
 }
 
 //stop user from clicking when they reach 25 votes/clicks
@@ -154,6 +158,7 @@ function handleClick(e) {
         sectionEl.removeEventListener('click', handleClick);
         showResults();
         updateVotes();
+        renderChart();
     } else {
         randomProduct();
         render()
@@ -174,6 +179,40 @@ function updateVotes (){
         productVotes[i] = Product.allProducts[i].votes;
     }
 }
+//function to render chart on the screen
+function renderChart(){
+    var context = document.getElementById('chart-placeholder').getContext('2d');
+
+    //
+    var productChart = {
+        label: 'Clicks per Product',
+        data: productVotes,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        };
+
+    var displayedData = {
+        label: 'Times Product Displayed',
+        data: timesDisplayed,
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+    };
+
+    var chartOptions = {
+        scales: {
+            yAxes:[{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    var productResults = new Chart(context, {
+        type: 'bar',
+        data: displayedData,
+        options: chartOptions,
+    });
+}
+
 
 //event listener on the image
 sectionEl.addEventListener('click', handleClick);
