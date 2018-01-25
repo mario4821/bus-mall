@@ -100,6 +100,8 @@ function newNumbers() {
     while (currentNumbers.includes(temp) || previousNumbers.includes(temp)) 
     return temp; //returns a random number
     }
+
+
 //Generates 3 new uniquest index numbers for images 
 // function newImages() {
 //     // previousNumbers = currentNumbers;
