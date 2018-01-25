@@ -79,10 +79,18 @@ var centerEl = document.getElementById('center');
 // callback function for event listener to randomly display image
 function randomProduct() {
 //random number generator to return a number between 0 and the length of the array.
-randomLeft = Math.floor(Math.random() * Product.allProducts.length);
-randomCenter = Math.floor(Math.random() * Product.allProducts.length);
-randomRight = Math.floor(Math.random() * Product.allProducts.length);
+    randomLeft = Math.floor(Math.random() * Product.allProducts.length);
+    randomCenter = Math.floor(Math.random() * Product.allProducts.length);
+    randomRight = Math.floor(Math.random() * Product.allProducts.length);
+
+    if(randomLeft === randomCenter || randomCenter === randomRight || randomLeft === randomRight){
+        randomProduct();
+    }
 }
+// function previousNumbers
+// if (randomRight previousNumbers || randomLeft = previousNumbers || randomCenter = previousNumbers)
+// }
+
 //check to make sure each random number is unique and not one of the previously displayed images
 //if numbers are the same, then new random numbers need to be generated.
 function newNumbers() {
@@ -96,11 +104,10 @@ function newNumbers() {
 //Generates 3 new uniquest index numbers for images 
 function newImages() {
     previousNumbers = currentNumbers;
-    currentNumbers = []; 
-//This loop begins index at 0 and will iderate numbers until i is no longer less than 3, incrementing each time and ultimately giving the new number. Going to genereate a new number that is unique for the first 3 indices.  
+    currentNumbers = [];
+//This loop begins index at 0 and will iterate numbers until i is no longer less than 3, incrementing each time and ultimately giving the new number. Going to genereate a new number that is unique for the first 3 indices.  
     for (let i = 0; i < 3; i++) {
         currentNumbers[i] = newNumbers();
-        
     }
 }
 
@@ -124,7 +131,6 @@ function render(){
 
     //keep track of these as the previously displayed products
     Product.lastDisplayed[0] = randomLeft;
-
     Product.lastDisplayed[1] = randomCenter;
     Product.lastDisplayed[2] = randomRight;
 }
@@ -140,7 +146,7 @@ function handleClick(e) {
         }
 }
 
-    if (Product.totalClicks > 10) {
+    if (Product.totalClicks > 24) {
         sectionEl.removeEventListener('click', handleClick);
         showResults();
         updateVotes();
@@ -153,7 +159,7 @@ function handleClick(e) {
 function showResults() {
     for(var i in Product.allProducts){
         var liEl = document.createElement('li');
-        liEl.textContent = Product.allProducts[i].name + 'has' + Product.allProducts[i].votes + 'votes and was displayed' + Product.allProducts[i].timesDisplayed + 'times.';
+        liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes and was displayed ' + Product.allProducts[i].timesDisplayed + ' times.';
         ulEl.appendChild(liEl);
     }
 }
