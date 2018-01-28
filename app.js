@@ -33,17 +33,17 @@ var previousNumbers = [];
 var currentNumbers = [];
 
 function randomizerProduct() {
-    return Math.floor(Math.random() * Product.allProducts.length);
+  return Math.floor(Math.random() * Product.allProducts.length);
 }
 
 //constructor of products
 function Product(filepath, name){
-    this.filepath = filepath;
-    this.name = name;
-    this.votes = 0;
-    this.timesDisplayed = 0;
-    Product.allProducts.push(this);
-    productNames.push(this.name);
+  this.filepath = filepath;
+  this.name = name;
+  this.votes = 0;
+  this.timesDisplayed = 0;
+  Product.allProducts.push(this);
+  productNames.push(this.name);
 }
 
 //stop user from clicking when they reach 25 votes/clicks
@@ -79,13 +79,13 @@ var centerEl = document.getElementById('center');
 // callback function for event listener to randomly display image
 function randomProduct() {
 //random number generator to return a number between 0 and the length of the array.
-    randomLeft = Math.floor(Math.random() * Product.allProducts.length);
-    randomCenter = Math.floor(Math.random() * Product.allProducts.length);
-    randomRight = Math.floor(Math.random() * Product.allProducts.length);
+  randomLeft = Math.floor(Math.random() * Product.allProducts.length);
+  randomCenter = Math.floor(Math.random() * Product.allProducts.length);
+  randomRight = Math.floor(Math.random() * Product.allProducts.length);
 
-    if(randomLeft === randomCenter || randomCenter === randomRight || randomLeft === randomRight){
-        randomProduct();
-    }
+  if(randomLeft === randomCenter || randomCenter === randomRight || randomLeft === randomRight){
+    randomProduct();
+  }
 }
 // function previousNumbers
 // if (randomRight previousNumbers || randomLeft = previousNumbers || randomCenter = previousNumbers)
@@ -94,15 +94,15 @@ function randomProduct() {
 //check to make sure each random number is unique and not one of the previously displayed images
 //if numbers are the same, then new random numbers need to be generated.
 function newNumbers() {
-    do {var temp = randomizerProduct() 
-//while the conditions are met the loop will rn and randomly produce a number.
-    }
-    while (currentNumbers.includes(temp) || previousNumbers.includes(temp)) 
-    return temp; //returns a random number
-    }
+  do {var temp = randomizerProduct();
+    //while the conditions are met the loop will rn and randomly produce a number.
+  }
+  while (currentNumbers.includes(temp) || previousNumbers.includes(temp));
+  return temp; //returns a random number
+}
 
 
-//Generates 3 new uniquest index numbers for images 
+//Generates 3 new uniquest index numbers for images
 // function newImages() {
 //     // previousNumbers = currentNumbers;
 //     // currentNumbers = [];
@@ -112,71 +112,71 @@ function newNumbers() {
 //     else (currentNumbers[i] <) {
 //         newNumbers();
 //         render()
-//     } 
-    
+//     }
+
 // newImages();
 // }
 
 //set the src and alt attributes for images
 function render(){
-    leftEl.src = Product.allProducts[randomLeft].filepath; //current 
-    leftEl.alt = Product.allProducts[randomLeft].name;
+  leftEl.src = Product.allProducts[randomLeft].filepath; //current
+  leftEl.alt = Product.allProducts[randomLeft].name;
 
-    centerEl.src = Product.allProducts[randomCenter].filepath;
-    centerEl.alt = Product.allProducts[randomCenter].name;
+  centerEl.src = Product.allProducts[randomCenter].filepath;
+  centerEl.alt = Product.allProducts[randomCenter].name;
 
-    rightEl.src = Product.allProducts[randomRight].filepath;
-    rightEl.alt = Product.allProducts[randomRight].name;
+  rightEl.src = Product.allProducts[randomRight].filepath;
+  rightEl.alt = Product.allProducts[randomRight].name;
 
-    //increment the number of times each image was shown
-    Product.allProducts[randomLeft].timesDisplayed += 1;
-    Product.allProducts[randomCenter].timesDisplayed += 1;
-    Product.allProducts[randomRight].timesDisplayed += 1;
+  //increment the number of times each image was shown
+  Product.allProducts[randomLeft].timesDisplayed += 1;
+  Product.allProducts[randomCenter].timesDisplayed += 1;
+  Product.allProducts[randomRight].timesDisplayed += 1;
 
-    //keep track of these as the previously displayed products
-    Product.lastDisplayed[0] = randomLeft;
-    Product.lastDisplayed[1] = randomCenter;
-    Product.lastDisplayed[2] = randomRight;
+  //keep track of these as the previously displayed products
+  Product.lastDisplayed[0] = randomLeft;
+  Product.lastDisplayed[1] = randomCenter;
+  Product.lastDisplayed[2] = randomRight;
 }
 //define our handleClick function
 function handleClick(e) {
-    //track the total number of clicks
-    Product.totalClicks +=1;
+  //track the total number of clicks
+  Product.totalClicks += 1;
 
-//count the clicks on a specific image
-    for(var i in Product.allProducts) {
-        if(e.target.alt === Product.allProducts[i].name) {
-            Product.allProducts[i].votes +=1;
-        }
-}
-
-    if (Product.totalClicks > 24) {
-        sectionEl.removeEventListener('click', handleClick);
-        showResults();
-        updateVotes();
-    } else {
-        randomProduct();
-        render()
+  //count the clicks on a specific image
+  for(var i in Product.allProducts) {
+    if(e.target.alt === Product.allProducts[i].name) {
+      Product.allProducts[i].votes += 1;
     }
+  }
+
+  if (Product.totalClicks > 24) {
+    sectionEl.removeEventListener('click', handleClick);
+    showResults();
+    updateVotes();
+  } else {
+    randomProduct();
+    render();
+  }
 }
 
 function showResults() {
-    for(var i in Product.allProducts){
-        var liEl = document.createElement('li');
-        liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes and was displayed ' + Product.allProducts[i].timesDisplayed + ' times.';
-        ulEl.appendChild(liEl);
-    }
+  for(var i in Product.allProducts){
+    var liEl = document.createElement('li');
+    liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes and was displayed ' + Product.allProducts[i].timesDisplayed + ' times.';
+    ulEl.appendChild(liEl);
+  }
 }
 
 //update the number of votes per product
 function updateVotes (){
-    for(var i in Product.allProducts) {
-        productVotes[i] = Product.allProducts[i].votes;
-    }
+  for(var i in Product.allProducts) {
+    productVotes[i] = Product.allProducts[i].votes;
+  }
 }
 
 //event listener on the image
 sectionEl.addEventListener('click', handleClick);
 
 randomProduct();
-render()
+render();
