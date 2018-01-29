@@ -139,6 +139,11 @@ function handleClick(e) {
     showResults();
     updateVotes();
     renderChart();
+
+    //add all vote values to local storage after vote is complete
+    localStorage.setItem('totalProductVote', JSON.stringify(productVotes));
+    localStorage.setItem('totalProductShown', JSON.stringify(productShown));
+
   } else {
     randomProduct();
     render();
