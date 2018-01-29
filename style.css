@@ -1,0 +1,21 @@
+body {
+    background-color: rgb(47, 143, 221);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1{
+    text-align: center
+}
+
+ul {
+    text-align: center;
+    list-style-type: none;
+}
+
+section {
+     margin: 150px;
+}
+
+canvas{
+    background: rgb(221, 221, 111);
+}

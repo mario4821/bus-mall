@@ -21,22 +21,19 @@ var sectionEl = document.getElementById('bus-products');
 //access the ul element from the DOM
 var ulEl = document.getElementById('results');
 
-//array to store chart label names
-var productNames = [];
 
 //array to store votes for each product
 var productVotes = [];
 
 var previousNumbers = [];
 
+//array to store chart label names
+var productNames = [];
 //array to show total products shown
 var productShown = [];
 
 //Current numbers for images called to avoid repeats
 var currentNumbers = [];
-
-//array to store names for chart lables
-var chartNames = [];
 
 function randomizerProduct() {
   return Math.floor(Math.random() * Product.allProducts.length);
@@ -52,7 +49,6 @@ function Product(filepath, name){
   productNames.push(this.name);
   //   names.push(this.name);
 }
-
 
 
 //images of products
@@ -94,9 +90,6 @@ function randomProduct() {
     randomProduct();
   }
 }
-// function previousNumbers
-// if (randomRight previousNumbers || randomLeft = previousNumbers || randomCenter = previousNumbers)
-// }
 
 //check to make sure each random number is unique and not one of the previously displayed images
 //if numbers are the same, then new random numbers need to be generated.
@@ -107,22 +100,6 @@ function newNumbers() {
   while (currentNumbers.includes(temp) || previousNumbers.includes(temp));
   return temp; //returns a random number
 }
-
-
-//Generates 3 new uniquest index numbers for images
-// function newImages() {
-//     // previousNumbers = currentNumbers;
-//     // currentNumbers = [];
-//     for (let i = 0; i < 1; i++) {
-//         currentNumbers[i] = newNumbers();
-//     }
-//     else (currentNumbers[i] <) {
-//         newNumbers();
-//         render()
-//     }
-
-// newImages();
-// }
 
 //set the src and alt attributes for images
 function render(){
@@ -152,21 +129,21 @@ function handleClick(e) {
   for(var i in Product.allProducts) {
     if(e.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].votes += 1;
-      
+
       //track the total number of clicks
       Product.totalClicks += 1;
     }
   }
-      if (Product.totalClicks > 24) {
-        sectionEl.removeEventListener('click', handleClick);
-        showResults();
-        updateVotes();
-        renderChart();
-      } else {
-        randomProduct();
-        render();
-      }
-    }
+  if (Product.totalClicks > 24) {
+    sectionEl.removeEventListener('click', handleClick);
+    showResults();
+    updateVotes();
+    renderChart();
+  } else {
+    randomProduct();
+    render();
+  }
+}
 
 function showResults() {
   for(var i in Product.allProducts){
@@ -185,9 +162,20 @@ function updateVotes (){
 }
 //function to render chart on the screen
 function renderChart(){
-  var context = document.getElementById('chart-placeholder').getContext('2d');
+  var sectionEl = document.getElementById('chart-placeholder');
+  var titleEl = document.createElement('h3');
+  titleEl.textContent = 'Votes and Displays Per Product';
+  sectionEl.appendChild(titleEl);
 
-  // need variable for chartNames
+  //HTML canvas background
+  var canvasEl = document.createElement('canvas');
+  canvasEl.id = 'canvas-chart';
+  canvasEl.height = '300';
+  canvasEl.width = '600';
+  sectionEl.appendChild(canvasEl);
+
+  var context = document.getElementById('canvas-chart').getContext('2d');
+
 
   var productChart = {
     label: 'Clicks per Product',
