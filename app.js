@@ -21,19 +21,19 @@ var sectionEl = document.getElementById('bus-products');
 //access the ul element from the DOM
 var ulEl = document.getElementById('results');
 
-//array to store chart label names
-var productNames = [];
 
 //array to store votes for each product
 var productVotes = [];
 
 var previousNumbers = [];
 
+//array to store chart label names
+var productNames = [];
+//array to show total products shown
+var productShown = [];
+
 //Current numbers for images called to avoid repeats
 var currentNumbers = [];
-
-//array to store names for chart lables
-var names = [];
 
 function randomizerProduct() {
   return Math.floor(Math.random() * Product.allProducts.length);
@@ -41,25 +41,15 @@ function randomizerProduct() {
 
 //constructor of products
 function Product(filepath, name){
-<<<<<<< HEAD
   this.filepath = filepath;
   this.name = name;
   this.votes = 0;
   this.timesDisplayed = 0;
   Product.allProducts.push(this);
   productNames.push(this.name);
-=======
-    this.filepath = filepath;
-    this.name = name;
-    this.votes = 0;
-    this.timesDisplayed = 0;
-    Product.allProducts.push(this);
-    productNames.push(this.name);
-    names.push(this.name);
->>>>>>> 4051f4ef29766d185706a53c0049c6f8a3406338
+  //   names.push(this.name);
 }
 
-//stop user from clicking when they reach 25 votes/clicks
 
 //images of products
 new Product('img/bag.jpg', 'R2D2 Bag');
@@ -100,9 +90,6 @@ function randomProduct() {
     randomProduct();
   }
 }
-// function previousNumbers
-// if (randomRight previousNumbers || randomLeft = previousNumbers || randomCenter = previousNumbers)
-// }
 
 //check to make sure each random number is unique and not one of the previously displayed images
 //if numbers are the same, then new random numbers need to be generated.
@@ -113,22 +100,6 @@ function newNumbers() {
   while (currentNumbers.includes(temp) || previousNumbers.includes(temp));
   return temp; //returns a random number
 }
-
-
-//Generates 3 new uniquest index numbers for images
-// function newImages() {
-//     // previousNumbers = currentNumbers;
-//     // currentNumbers = [];
-//     for (let i = 0; i < 1; i++) {
-//         currentNumbers[i] = newNumbers();
-//     }
-//     else (currentNumbers[i] <) {
-//         newNumbers();
-//         render()
-//     }
-
-// newImages();
-// }
 
 //set the src and alt attributes for images
 function render(){
@@ -153,31 +124,26 @@ function render(){
 }
 //define our handleClick function
 function handleClick(e) {
-  //track the total number of clicks
-  Product.totalClicks += 1;
-
-<<<<<<< HEAD
+  //stop user from clicking when they reach 25 votes/clicks
   //count the clicks on a specific image
   for(var i in Product.allProducts) {
     if(e.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].votes += 1;
-=======
-    if (Product.totalClicks > 24) {
-        sectionEl.removeEventListener('click', handleClick);
-        showResults();
-        updateVotes();
-        renderChart();
-    } else {
-        randomProduct();
-        render()
->>>>>>> 4051f4ef29766d185706a53c0049c6f8a3406338
+
+      //track the total number of clicks
+      Product.totalClicks += 1;
     }
   }
-
   if (Product.totalClicks > 24) {
     sectionEl.removeEventListener('click', handleClick);
     showResults();
     updateVotes();
+    renderChart();
+
+    //add all vote values to local storage after vote is complete
+    localStorage.setItem('totalProductVote', JSON.stringify(productVotes));
+    localStorage.setItem('totalProductShown', JSON.stringify(productShown));
+
   } else {
     randomProduct();
     render();
@@ -194,42 +160,60 @@ function showResults() {
 
 //update the number of votes per product
 function updateVotes (){
-  for(var i in Product.allProducts) {
-    productVotes[i] = Product.allProducts[i].votes;
+  for (var i in Product.allProducts) {
+    productVotes[i] += Product.allProducts[i].votes;
+    productShown[i] += Product.allProducts[i].timesDisplayed;
   }
 }
 //function to render chart on the screen
 function renderChart(){
-    var context = document.getElementById('chart-placeholder').getContext('2d');
+  var sectionEl = document.getElementById('chart-placeholder');
+  var titleEl = document.createElement('h3');
+  titleEl.textContent = 'Votes and Displays Per Product';
+  sectionEl.appendChild(titleEl);
 
-    //
-    var productChart = {
-        label: 'Clicks per Product',
-        data: productVotes,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        };
+  //HTML canvas background
+  var canvasEl = document.createElement('canvas');
+  canvasEl.id = 'canvas-chart';
+  canvasEl.height = '300';
+  canvasEl.width = '600';
+  sectionEl.appendChild(canvasEl);
 
-    var displayedData = {
-        label: 'Times Product Displayed',
-        data: timesDisplayed,
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-    };
+  var context = document.getElementById('canvas-chart').getContext('2d');
 
-    var chartOptions = {
-        scales: {
-            yAxes:[{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+
+  var productChart = {
+    label: 'Clicks per Product',
+    data: productVotes,
+    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+  };
+
+  var displayedData = {
+    label: 'Times Product Displayed',
+    data: productShown,
+    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+  };
+
+  var productIdentify = {
+    labels: productNames,
+    datasets:[productChart, displayedData]
+  };
+
+  var chartOptions = {
+    scales: {
+      yAxes:[{
+        ticks: {
+          beginAtZero: true
         }
-    };
+      }]
+    }
+  };
 
-    var productResults = new Chart(context, {
-        type: 'bar',
-        data: displayedData,
-        options: chartOptions,
-    });
+  var productResults = new Chart(context, {
+    type: 'bar',
+    data: productIdentify,
+    options: chartOptions,
+  });
 }
 
 
